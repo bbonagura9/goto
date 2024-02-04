@@ -1,3 +1,6 @@
+alias b := build
+alias r := run
+
 bindir:
   #!/usr/bin/env bash
   [ -e ./bin ] || mkdir bin

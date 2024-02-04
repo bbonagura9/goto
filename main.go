@@ -19,6 +19,13 @@ type Todo struct {
   Done bool   `gorm:"name:done"`
 }
 
+func getEnv(key, fallback string) string {
+    if value, ok := os.LookupEnv(key); ok {
+        return value
+    }
+    return fallback
+}
+
 func main() {
   db := connectDB()
   db.AutoMigrate(&Todo{})
@@ -30,14 +37,7 @@ func main() {
   r.GET("/api/todo", getTodos(db))
   r.POST("/api/todo", putTodo(db))
   r.POST("/api/todo/:id/complete", completeTodo(db))
-  r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-}
-
-func getEnv(key, fallback string) string {
-    if value, ok := os.LookupEnv(key); ok {
-        return value
-    }
-    return fallback
+  r.Run(":8080")
 }
 
 func connectDB() *gorm.DB {
