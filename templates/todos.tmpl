@@ -1,0 +1,24 @@
+{{ $doneParam := "" }}
+{{ if .withDone }}
+  {{ $doneParam = "done=on" }}
+{{ else }}
+  {{ $doneParam = "done=off" }}
+{{ end }}
+{{ range $todo := .todos }}
+  <p>
+    <input
+      type="checkbox"
+      class="form-check-input"
+      hx-post="/api/todo/{{ $todo.ID }}/complete?{{ $doneParam }}"
+      hx-target="#todos"
+      {{ if $todo.Done }}checked{{ end }}
+    />
+    <label class="form-check-label">{{ $todo.Text }}</label>
+  </p>
+{{ end }}
+<form 
+  hx-post="/api/todo?{{ $doneParam }}"
+  hx-target="#todos"
+>
+  <input type="text" id="text" name="text" class="form-control">
+</form>
